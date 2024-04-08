@@ -21,6 +21,13 @@ function Profile() {
 		});
 	}
 
+	function goToQuestionsAsked() {
+		navigate("/questions-asked")
+	}
+
+	function goToQuestionsAnswered() {
+		navigate("/questions-answered")
+	}
 	function getUserProfile() {
 		currentUser.getIdToken()
 			.then(async (token) => {
@@ -63,8 +70,13 @@ function Profile() {
 			</Card>
 
 			<div className="w-100 text-center mt-2">
-				<Button variant="link" onClick={handleLogout}>Log Out</Button>
+				<Button variant="link" onClick={goToQuestionsAsked}>Questions Asked</Button>
 			</div>
+
+			<div className="w-100 text-center mt-2">
+				<Button variant="link" onClick={goToQuestionsAnswered}>Questions Answered</Button>
+			</div>
+			
 		</>
 	)
 }

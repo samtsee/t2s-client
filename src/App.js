@@ -8,6 +8,8 @@ import Questions from "./pages/Questions";
 import QuestionDetails from "./pages/QuestionDetails";
 import AskQuestion from "./pages/AskQuestion";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import QuestionsAsked from "./pages/QuestionsAsked";
+import QuestionsAnswered from "./pages/QuestionsAnswered";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -32,6 +34,8 @@ function App() {
               <Route path="/profile" element={currentUser ? <Profile /> : <Navigate to="/login" />} />
               <Route path="/question/:id" element={currentUser ? <QuestionDetails /> : <Navigate to="/login" />} />
               <Route path="/ask-question" element={currentUser ? <AskQuestion /> : <Navigate to="/login" />} />
+              <Route path="/questions-asked" element={currentUser ? <QuestionsAsked /> : <Navigate to="/login" />} />
+              <Route path="/questions-answered" element={currentUser ? <QuestionsAnswered /> : <Navigate to="/login" />} />
             </Routes>
           </AuthProvider>
         </BrowserRouter>
