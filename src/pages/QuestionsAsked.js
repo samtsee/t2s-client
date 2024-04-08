@@ -24,7 +24,11 @@ function QuestionsAsked() {
             headers: headers
           }
         ).then((response) => {
-          const filteredQuestions = response.data.filter(question => question.user === currentUser.uid);
+          const formattedQuestions = response.data.map(question => ({
+						...question.data,
+						id: question.id
+					}));
+          const filteredQuestions = formattedQuestions.filter(question => question.user === currentUser.uid);
           setQuestions(filteredQuestions);
           console.log(response.data)
         }).catch((error) => {

@@ -45,7 +45,7 @@ function QuestionsAnswered() {
     qid.forEach(element => {
         getAnswers(element);
     });
-    console.log(questionsAnswered)
+    // console.log(questionsAnswered)
 
   }
 
@@ -66,7 +66,7 @@ function QuestionsAnswered() {
                 if (response.data.length !== 0) {
                     response.data.forEach(element => {
                         if (!questionsAnswered.includes(element.qid)) {
-                            questionsAnswered.push(element.qid);
+                            questionsAnswered.push(element.data.qid);
                         }
                     } 
 
@@ -91,13 +91,16 @@ function QuestionsAnswered() {
           { headers: headers }
         ).then((response) => {
           // Use map() to create an array of user IDs
-          console.log("LOGGING")
-          console.log(questionsAnswered)
-          const userIds = response.data.filter(question => questionsAnswered.includes(question.id));
-          console.log(userIds)
-          setQuestions(userIds)
-          // Use the Set constructor to remove duplicates, converting back to array
-    
+          console.log(response.data)
+          // console.log("LOGGING")
+          // console.log(questionsAnswered)
+          const formattedQuestions = response.data.map(question => ({
+						...question.data,
+						id: question.id
+					}));
+					const filteredQuestions = formattedQuestions.filter(question => questionsAnswered.includes(question.id));
+					setQuestions(filteredQuestions);
+          // console.log(filteredQuestions)
         }).catch((error) => {
           console.error("Error fetching questions:");
           setError(error.toString());

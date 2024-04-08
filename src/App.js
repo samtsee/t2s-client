@@ -7,9 +7,11 @@ import Profile from "./pages/Profile";
 import Questions from "./pages/Questions";
 import QuestionDetails from "./pages/QuestionDetails";
 import AskQuestion from "./pages/AskQuestion";
+import TagQuestions from "./pages/TagQuestions";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import QuestionsAsked from "./pages/QuestionsAsked";
 import QuestionsAnswered from "./pages/QuestionsAnswered";
+import { TagsProvider } from "./contexts/TagsContext";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -27,6 +29,7 @@ function App() {
       <div style={{ height: "100%" }}>
         <BrowserRouter>
           <AuthProvider>
+            <TagsProvider>
             <Routes>
               <Route path="/" element={currentUser ? <Questions /> : <Navigate to="/login" />} />
               <Route path="/signup" element={currentUser ? <Navigate to="/" /> : <Signup />} />
@@ -36,7 +39,9 @@ function App() {
               <Route path="/ask-question" element={currentUser ? <AskQuestion /> : <Navigate to="/login" />} />
               <Route path="/questions-asked" element={currentUser ? <QuestionsAsked /> : <Navigate to="/login" />} />
               <Route path="/questions-answered" element={currentUser ? <QuestionsAnswered /> : <Navigate to="/login" />} />
+              <Route path="/questions/tagged/:tag" element={currentUser ? <TagQuestions /> : <Navigate to="/login" />} />
             </Routes>
+            </TagsProvider>
           </AuthProvider>
         </BrowserRouter>
       </div>
