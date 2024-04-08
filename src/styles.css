@@ -1,0 +1,30 @@
+.link-no-underline {
+  text-decoration: none;
+  color: #1183d4;
+}
+
+.link-no-underline:hover {
+  color: #0b64a8;
+}
+
+.tag-button.btn-primary {
+  color: #107dc9;
+  border: none;
+  background-color: #e9f4fb;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tag-button.btn-primary:hover {
+  background-color: #d3e9f8;
+  color: #107dc9;
+}
+
+.tag-button.btn-primary:active {
+  background-color: #d3e9f8 !important;
+  color: #107dc9 !important;
+}
+
+.search-button {
+  background-color: white;
+}

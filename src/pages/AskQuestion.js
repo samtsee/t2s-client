@@ -3,22 +3,44 @@ import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from "../contexts/AuthContext";
 import axios from 'axios';
+import { useTags } from "../contexts/TagsContext";
 
 
 function AskQuestion() {
   const { currentUser } = useAuth();
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
+  const tagsRef = useRef(null);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { tags, setTags } = useTags();
 
+  console.log(tags)
+
+  // Function to handle adding tags
+  function handleAddTag() {
+    const newTag = tagsRef.current.value.trim();
+    if (newTag && !selectedTags.includes(newTag)) {
+      setSelectedTags([...selectedTags, newTag]);
+      tagsRef.current.value = ''; // Clear input after adding tag
+    }
+  }
+
+  // Function to handle removing tags
+  function handleRemoveTag(tagToRemove) {
+    setSelectedTags(selectedTags.filter(tag => tag !== tagToRemove));
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
     setLoading(true);
     // console.log(descriptionRef.current.value)
+    console.log(selectedTags)
+    const uniqueTags = new Set([...tags, ...selectedTags]); // Combine existing tags with new tags and convert to Set to remove duplicates
+    setTags(Array.from(uniqueTags));
 
     currentUser.getIdToken()
       .then(async (token) => {
@@ -33,7 +55,8 @@ function AskQuestion() {
           {
             user: currentUser.uid,
             title: titleRef.current.value,
-            question: descriptionRef.current.value
+            question: descriptionRef.current.value,
+            tags: selectedTags
           },
           {
             headers: headers
@@ -71,6 +94,22 @@ function AskQuestion() {
             <Form.Group id="description">
               <Form.Label>Description</Form.Label>
               <Form.Control type="description" as="textarea" rows={5} ref={descriptionRef} required />
+            </Form.Group>
+
+            <Form.Group id="tags">
+              <Form.Label>Tags</Form.Label>
+              <div>
+                {/* Display selected tags */}
+                {selectedTags.map(tag => (
+                  <Button key={tag} variant="outline-primary" size="sm" className="mr-2 mb-2" onClick={() => handleRemoveTag(tag)} style={{ marginRight: '0.5rem', marginBottom: '0.5rem' }}>
+                    {tag} <span aria-hidden="true">&times;</span>
+                  </Button>
+                ))}
+              </div>
+              {/* Input field for creating new tags */}
+              <Form.Control type="text" ref={tagsRef} placeholder="Enter tag" className="mb-2" />
+              {/* Button to add new tags */}
+              <Button variant="primary" size="sm" onClick={handleAddTag}>Add Tag</Button>
             </Form.Group>
 
             <Button disabled={loading} className="w-100 mt-3" type="submit">

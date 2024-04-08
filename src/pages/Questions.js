@@ -4,12 +4,15 @@ import NavBar from '../components/NavBar';
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { useTags } from "../contexts/TagsContext";
+import '../styles.css';
 
 
 function Questions() {
   const [error, setError] = useState("");
   const { currentUser } = useAuth();
   const [questions, setQuestions] = useState([]);
+  const { setTags } = useTags();
   const navigate = useNavigate();
 
   function getAllQuestions() {
@@ -27,7 +30,23 @@ function Questions() {
           }
         ).then((response) => {
           // console.log("User post success:", response.data);
-          setQuestions(response.data);
+          const formattedQuestions = response.data.map(question => ({
+						...question.data,
+						id: question.id
+					}));
+          setQuestions(formattedQuestions);
+          // Extract unique tags from the current formattedQuestions array
+          const uniqueTagsSet = new Set();
+          formattedQuestions.forEach(question => {
+            question.tags.forEach(tag => {
+              uniqueTagsSet.add(tag);
+            });
+          });
+
+          // Convert Set to an array
+          const uniqueTagsArray = [...uniqueTagsSet];
+          setTags(uniqueTagsArray)
+          // console.log(uniqueTagsArray);
         }).catch((error) => {
           console.error("Error fetching questions:", error.response.status, error.response.data);
           setError(error)
@@ -42,6 +61,10 @@ function Questions() {
 
   function askQuestion() {
     navigate("/ask-question");
+  }
+
+  function goToTaggedQuestions(tag) {
+    navigate(`/questions/tagged/${tag}`);
   }
 
   return (
@@ -64,14 +87,34 @@ function Questions() {
       </Container>
 
       <Container>
-        {questions.map((question, i) => (
-          <div key={i}>
-            <Link to={`/question/${question.id}`}>
-              <h3>{question.title}</h3>
-            </Link>
-            <p>{question.question}</p>
-          </div>
-        ))}
+        <hr />
+				<h5 style={{ marginBottom: "15px" }}>Answers</h5>
+				<Row>
+          {questions.map((question, i) => (
+            <div key={i}>
+              <Link to={`/question/${question.id}`} className="link-no-underline">
+                <h4>{question.title}</h4>
+              </Link>
+              <p>{question.question}</p>
+              <div>
+                {/* Display selected tags */}
+                {question.tags.map(tag => (
+                  <Button
+                    key={tag}
+                    variant="primary"
+                    size="sm"
+                    className="mr-2 mb-2 tag-button"
+                    onClick={() => goToTaggedQuestions(tag)}
+                  >
+                    {tag} 
+                  </Button>
+                ))}
+              </div>
+              {i !== questions.length - 1 && <hr />}
+            </div>
+          ))}
+          </Row>
+				  <hr />
       </Container>
     </>
   )
