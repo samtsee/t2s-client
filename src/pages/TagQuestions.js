@@ -16,7 +16,7 @@ function TagQuestions() {
 	const { setTags } = useTags();
 	const navigate = useNavigate();
 
-	function getAllQuestions() {
+	function getTagQuestions() {
 		currentUser.getIdToken()
 			.then(async (token) => {
 				// console.log(token);
@@ -45,7 +45,7 @@ function TagQuestions() {
 	}
 
 	useEffect(() => {
-		getAllQuestions();
+		getTagQuestions();
 	}, [])
 
 	function askQuestion() {
@@ -78,7 +78,9 @@ function TagQuestions() {
 			<Container>
 				<hr />
 				<Row>
-					{questions.map((question, i) => (
+				{questions.length > 0 ? (
+					// Render questions if the array is not empty
+					questions.map((question, i) => (
 						<div key={i}>
 							<Link to={`/question/${question.id}`} className="link-no-underline">
 								<h4>{question.title}</h4>
@@ -100,7 +102,11 @@ function TagQuestions() {
 							</div>
 							{i !== questions.length - 1 && <hr />}
 						</div>
-					))}
+					))
+				) : (
+					// Render a message if the array is empty
+					<p>No results for [{tag}].</p>
+				)}
 				</Row>
 				<hr />
 			</Container>

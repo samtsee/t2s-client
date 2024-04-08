@@ -47,6 +47,10 @@ function QuestionDetails() {
     getQuestion();
   }, [id]);
 
+  function goToTaggedQuestions(tag) {
+    navigate(`/questions/tagged/${tag}`);
+  }
+
   function handleDeleteQuestion(questionId) {
     // console.log(questionId)
     currentUser.getIdToken()
@@ -94,6 +98,7 @@ function QuestionDetails() {
                   variant="primary"
                   size="sm"
                   className="mr-2 mb-2 tag-button"
+                  onClick={() => goToTaggedQuestions(tag)}
                 >
                   {tag} 
                 </Button>

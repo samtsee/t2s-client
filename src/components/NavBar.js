@@ -1,13 +1,37 @@
-import React from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom'; // Import Link from React Router
+import React, { useState } from "react";
+import { Button, Container, Form, Nav, Navbar } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
 
 function NavBar() {
+  const [searchValue, setSearchValue] = useState('');
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    navigate(`/questions/tagged/${searchValue}`);
+  };
+
+  const handleInputChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar href="/" bg="dark" variant="dark" expand="lg">
       <Container fluid>
         <Link to="/" className="navbar-brand">Teacher2Student</Link>
-        <Nav className="ml-auto">
+      
+        <Form className="d-flex mx-auto my-2 my-lg-0">
+          <Form.Control
+            type="search"
+            placeholder="Search"
+            className="me-2"
+            aria-label="Search"
+            value={searchValue}
+            onChange={handleInputChange}
+          />
+          <Button variant="outline-success" className="search-button" onClick={handleSearch}>Search</Button>
+        </Form>
+
+        <Nav className="ms-auto">
           <Link to="/profile" className="nav-link">Profile</Link>
         </Nav>
       </Container>
