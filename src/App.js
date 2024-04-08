@@ -9,6 +9,8 @@ import QuestionDetails from "./pages/QuestionDetails";
 import AskQuestion from "./pages/AskQuestion";
 import TagQuestions from "./pages/TagQuestions";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import QuestionsAsked from "./pages/QuestionsAsked";
+import QuestionsAnswered from "./pages/QuestionsAnswered";
 import { TagsProvider } from "./contexts/TagsContext";
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
               <Route path="/profile" element={currentUser ? <Profile /> : <Navigate to="/login" />} />
               <Route path="/question/:id" element={currentUser ? <QuestionDetails /> : <Navigate to="/login" />} />
               <Route path="/ask-question" element={currentUser ? <AskQuestion /> : <Navigate to="/login" />} />
+              <Route path="/questions-asked" element={currentUser ? <QuestionsAsked /> : <Navigate to="/login" />} />
+              <Route path="/questions-answered" element={currentUser ? <QuestionsAnswered /> : <Navigate to="/login" />} />
               <Route path="/questions/tagged/:tag" element={currentUser ? <TagQuestions /> : <Navigate to="/login" />} />
             </Routes>
             </TagsProvider>

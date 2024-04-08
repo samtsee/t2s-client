@@ -88,7 +88,6 @@ function Questions() {
 
       <Container>
         <hr />
-				<h5 style={{ marginBottom: "15px" }}>Answers</h5>
 				<Row>
           {questions.map((question, i) => (
             <div key={i}>

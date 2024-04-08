@@ -21,6 +21,13 @@ function Profile() {
 		});
 	}
 
+	function goToQuestionsAsked() {
+		navigate("/questions-asked")
+	}
+
+	function goToQuestionsAnswered() {
+		navigate("/questions-answered")
+	}
 	function getUserProfile() {
 		currentUser.getIdToken()
 			.then(async (token) => {
@@ -57,14 +64,23 @@ function Profile() {
 
 					{error && <Alert variant="danger">{error}</Alert>}
 
-					<strong>Email: </strong> {currentUser.email}
+					<p className="text-center mb-4"><strong>Email: </strong> {currentUser.email}</p>
 
 				</Card.Body>
 			</Card>
 
 			<div className="w-100 text-center mt-2">
+				<Button variant="link" onClick={goToQuestionsAsked}>Questions Asked</Button>
+			</div>
+
+			<div className="w-100 text-center mt-2">
+				<Button variant="link" onClick={goToQuestionsAnswered}>Questions Answered</Button>
+			</div>
+
+			<div className="w-100 text-center mt-2">
 				<Button variant="link" onClick={handleLogout}>Log Out</Button>
 			</div>
+
 		</>
 	)
 }
