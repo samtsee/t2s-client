@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { Button, Container, Form, Nav, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import '../styles.css';
 
 function NavBar() {
   const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
 
   const handleSearch = () => {
-    navigate(`/questions/tagged/${searchValue}`);
+    if (searchValue.trim() === "") {
+      navigate("/");
+    } else {
+      navigate(`/questions/tagged/${searchValue}`);
+    }
   };
 
   const handleInputChange = (event) => {
@@ -28,7 +33,7 @@ function NavBar() {
             value={searchValue}
             onChange={handleInputChange}
           />
-          <Button variant="outline-success" className="search-button" onClick={handleSearch}>Search</Button>
+          <Button variant="secondary" className="search-button" onClick={handleSearch}>Search</Button>
         </Form>
 
         <Nav className="ms-auto">
