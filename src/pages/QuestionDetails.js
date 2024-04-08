@@ -27,7 +27,15 @@ function QuestionDetails() {
             headers: headers
           }
         ).then((response) => {
-          setQuestion(response.data);
+          const data = response.data.data;
+          const questionData = {
+            id: response.data.id,
+            user: data.user,
+            title: data.title,
+            question: data.question,
+            tags: data.tags
+          };
+          setQuestion(questionData);          
         }).catch((error) => {
           console.error("Error fetching question:", error.response.status, error.response.data);
           setError(error);
@@ -78,6 +86,19 @@ function QuestionDetails() {
           <p className="mt-3">Asked By: {question.user}</p>
           <h1>{question.title}</h1>
           <p className="text-sm">{question.question}</p>
+          <div>
+              {/* Display selected tags */}
+              {question.tags && question.tags.map(tag => (
+                <Button
+                  key={tag}
+                  variant="primary"
+                  size="sm"
+                  className="mr-2 mb-2 tag-button"
+                >
+                  {tag} 
+                </Button>
+              ))}
+            </div>
         </div>
         <div>
           {question.user === currentUser.uid && (
